@@ -3,7 +3,7 @@ import {
   createGallery,
   getAllGallery,
   getGalleryPost,
-  getGalleryId,
+  // getGalleryId,
   updateGallery,
   deleteGallery,
 } from "./GalleryController.js";

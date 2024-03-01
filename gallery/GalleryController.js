@@ -15,7 +15,7 @@ export const createGallery = (req, res) => {
   let fileName = "";
 
   for (let i = 1; checkItem !== false; i++) {
-    const checkIterasi = fs.existsSync(`./public/projects/${i}-${convertName}`);
+    const checkIterasi = fs.existsSync(`./public/gallery/${i}-${convertName}`);
     if (checkIterasi === false) {
       checkItem = false;
       fileName = `${i}-${convertName}`;
@@ -100,20 +100,20 @@ export const getGalleryPost = async (req, res) => {
   });
 };
 
-export const getGalleryId = async (req, res) => {
-  try {
-    const response = await Gallery.findOne({
-      attributes: ["post_id", "url"],
-      where: {
-        id: req.params.id,
-      },
-    });
-    if (!response) return res.status(404).json({ msg: "No data found" });
-    res.status(200).json(response);
-  } catch (error) {
-    res.status(500).json({ msg: error.message });
-  }
-};
+// export const getGalleryId = async (req, res) => {
+//   try {
+//     const response = await Gallery.findOne({
+//       attributes: ["post_id", "url"],
+//       where: {
+//         id: req.params.id,
+//       },
+//     });
+//     if (!response) return res.status(404).json({ msg: "No data found" });
+//     res.status(200).json(response);
+//   } catch (error) {
+//     res.status(500).json({ msg: error.message });
+//   }
+// };
 
 export const updateGallery = async (req, res) => {
   const gallery = await Gallery.findOne({

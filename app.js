@@ -8,6 +8,8 @@ import UserRoute from "./auth/UserRoute.js";
 import AuthRoute from "./auth/AuthRoute.js";
 import GalleryRoute from "./gallery/GalleryRoute.js";
 import PostRoute from "./post/PostRoute.js";
+import DashboardRoute from "./dashboard/DashboardRoute.js";
+import EmployeeRoute from "./employee/EmployeeRoute.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -52,6 +54,8 @@ app.use(UserRoute);
 app.use(AuthRoute);
 app.use(GalleryRoute);
 app.use(PostRoute);
+app.use(DashboardRoute);
+app.use(EmployeeRoute);
 
 app.listen(process.env.PORT, () => {
   console.log(`Running on PORT ${process.env.PORT}`);

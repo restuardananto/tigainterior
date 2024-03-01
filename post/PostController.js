@@ -1,5 +1,6 @@
 import Post from "./PostModel.js";
 import { Op } from "sequelize";
+import fs from "fs";
 import Gallery from "../gallery/GalleryModel.js";
 
 export const createPost = async (req, res) => {
@@ -52,7 +53,7 @@ export const getAllPost = async (req, res) => {
   });
   const totalPage = Math.ceil(totalRows / limit);
   const result = await Post.findAll({
-    attributes: ["uuid", "title", "deskripsi", "kategori"],
+    attributes: ["uuid", "title", "deskripsi", "kategori", "createdAt"],
     where: {
       [Op.or]: [
         {
@@ -140,33 +141,47 @@ export const updatePost = async (req, res) => {
 };
 
 export const deletePost = async (req, res) => {
-  const response = await Post.findOne({
-    where: {
-      uuid: req.params.id,
-    },
-  });
-  if (!response) return res.status(404).json({ msg: "No data found" });
-
-  const gallery = await Gallery.findAll({
-    where: {
-      post_id: response.uuid,
-    },
-  });
   try {
-    await Post.destroy({
+    const post = await Post.findOne({
       where: {
-        id: response.id,
+        uuid: req.params.id,
       },
     });
-    if (gallery) {
+    if (!post) return res.status(404).json({ msg: "No data found" });
+
+    const gallery = await Gallery.findAll({
+      where: {
+        post_id: post.uuid,
+      },
+    });
+
+    await Post.destroy({
+      where: {
+        id: post.id,
+      },
+    });
+
+    if (gallery.length > 0) {
+      for (const i of gallery) {
+        const filePath = `./public/gallery/${i.foto}`;
+        try {
+          fs.unlinkSync(filePath);
+        } catch (error) {
+          console.error(`Error deleting image file: ${error.message}`);
+        }
+      }
+
       await Gallery.destroy({
         where: {
-          post_id: response.uuid,
+          post_id: post.uuid,
         },
       });
     }
-    res.status(200).json({ msg: "Post deleted successfully" });
+
+    res.status(200).json({
+      msg: "Post and associated gallery entries deleted successfully",
+    });
   } catch (error) {
-    res.status(500).json({ msg: error.message });
+    res.status(500).json({ msg: "Internal server error" });
   }
 };
