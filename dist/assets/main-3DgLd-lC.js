@@ -1,0 +1,1 @@
+import{R as a,c as s,r as t}from"./router-j7ZdOXCR.js";import{o as c,c as o,a as r,u as n,b as p}from"./authStore-PaDJPSI9.js";const i={class:"flex flex-col items-center"},m={__name:"App",setup(_){return(l,f)=>(c(),o("main",i,[r(n(a))]))}},e=s(m),u=p();e.use(t);e.use(u);e.mount("#app");
