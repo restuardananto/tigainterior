@@ -49,7 +49,7 @@ app.use(
 app.use(express.json());
 app.use(fileUpload());
 app.use(express.static("public"));
-app.use(express.static("dist"));
+// app.use(express.static("dist"));
 app.use(UserRoute);
 app.use(AuthRoute);
 app.use(GalleryRoute);
