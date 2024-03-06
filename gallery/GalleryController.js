@@ -1,6 +1,8 @@
 import Gallery from "./GalleryModel.js";
 import path from "path";
 import fs from "fs";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const createGallery = (req, res) => {
   if (req.files === null)
@@ -23,7 +25,9 @@ export const createGallery = (req, res) => {
   }
 
   // const url = `${req.protocol}://${req.get("host")}/gallery/${fileName}`;
-  const url = `https://${req.get("host")}/gallery/${fileName}`;
+  const url = `${process.env.PROTOCOL}://${req.get(
+    "host"
+  )}/gallery/${fileName}`;
   const allowedType = [".png", ".jpg", ".jpeg"];
 
   if (!postId) return res.status(400).json({ msg: "Please add a post" });
@@ -82,7 +86,7 @@ export const getGalleryPost = async (req, res) => {
   });
   const totalPage = Math.ceil(totalRows / limit);
   const result = await Gallery.findAll({
-    attributes: ["post_id", "url"],
+    attributes: ["id", "post_id", "foto", "url"],
     where: {
       post_id: parameter,
     },
@@ -158,7 +162,9 @@ export const updateGallery = async (req, res) => {
   }
 
   // const url = `${req.protocol}://${req.get("host")}/gallery/${fileName}`;
-  const url = `https://${req.get("host")}/gallery/${fileName}`;
+  const url = `${process.env.PROTOCOL}://${req.get(
+    "host"
+  )}/gallery/${fileName}`;
   try {
     await Gallery.update({
       post_id: gallery.post_id,
@@ -173,7 +179,6 @@ export const updateGallery = async (req, res) => {
 
 export const deleteGallery = async (req, res) => {
   const gallery = await Gallery.findOne({
-    attributes: ["post_id", "url"],
     where: {
       id: req.params.id,
     },

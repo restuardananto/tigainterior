@@ -42,7 +42,7 @@ app.use(
 app.use(
   cors({
     credentials: true,
-    origin: "https://tigainterior.com",
+    origin: process.env.ORIGIN,
   })
 );
 
